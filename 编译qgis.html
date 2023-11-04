@@ -1,0 +1,231 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">编译QGIS 3.26源代码</h1>
+</div>
+
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+<article class="baidu_pl">
+<div class="article_content clearfix" id="article_content">
+<link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css" rel="stylesheet"/>
+<link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-dc4a025e85.css" rel="stylesheet"/>
+<div class="htmledit_views" id="content_views">
+<p> </p>
+<p> </p>
+
+<p> </p>
+<h2><strong> 下载源代码</strong></h2>
+<p> </p>
+<p>建议将不同版本的QGIS源代码用单独的目录存放，打开命令行终端，输入如下命令，建立工作目录并切换到该目录：</p>
+<p> </p>
+<pre><code>mkdir -p ${HOME}/dev/QGIS</code><code>cd ${HOME}/dev/QGIS</code></pre>
+<p> </p>
+<p>下载源代码： </p>
+<p> </p>
+<pre><code>wget https://github.com/qgis/QGIS/archive/final-3_26_0.tar.gz</code></pre>
+<p> </p>
+<p>解压缩下载回来的代码包：</p>
+<p> </p>
+<pre><code>tar -zxf QGIS-final-3_26_0.tar.gz</code></pre>
+<p> </p>
+<h2><strong> 03 安装依赖库</strong></h2>
+<p> </p>
+<p>输入如下命令安装QGIS编译需要的依赖库：</p>
+<p> </p>
+<pre><code>sudo apt-get install bison ca-certificates ccache cmake cmake-curses-gui dh-python doxygen expect flex flip gdal-bin git graphviz grass-dev libexiv2-dev libexpat1-dev libfcgi-dev libgdal-dev libgeos-dev libgsl-dev libpdal-dev libpq-dev libproj-dev libprotobuf-dev libqca-qt5-2-dev libqca-qt5-2-plugins libqscintilla2-qt5-dev libqt5opengl5-dev libqt5serialport5-dev libqt5sql5-sqlite libqt5svg5-dev libqt5webkit5-dev libqt5xmlpatterns5-dev libqwt-qt5-dev libspatialindex-dev libspatialite-dev libsqlite3-dev libsqlite3-mod-spatialite libyaml-tiny-perl libzip-dev libzstd-dev lighttpd locales ninja-build ocl-icd-opencl-dev opencl-headers pdal pkg-config poppler-utils protobuf-compiler pyqt5-dev pyqt5-dev-tools pyqt5.qsci-dev python3-all-dev python3-autopep8 python3-dateutil python3-dev python3-future python3-gdal python3-httplib2 python3-jinja2 python3-lxml python3-markupsafe python3-mock python3-nose2 python3-owslib python3-plotly python3-psycopg2 python3-pygments python3-pyproj python3-pyqt5 python3-pyqt5.qsci python3-pyqt5.qtsql python3-pyqt5.qtsvg python3-pyqt5.qtwebkit python3-requests python3-sip python3-sip-dev python3-six python3-termcolor python3-tz python3-yaml qt3d-assimpsceneimport-plugin qt3d-defaultgeometryloader-plugin qt3d-gltfsceneio-plugin qt3d-scene2d-plugin qt3d5-dev qt5-default qt5keychain-dev qtbase5-dev qtbase5-private-dev qtpositioning5-dev qttools5-dev qttools5-dev-tools saga spawn-fcgi xauth xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable xvfb</code></pre>
+<p> </p>
+<p>下载的时间视网络状况而定，有时候会达到几个小时，耐心等待就好。当所有软件包下载完成后，系统汇总需要安装的软件包信息，询问是否继续，输入 “Y”，回车，并等待所有依赖库安装完成。</p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/1c9ceea986d9025888de6b3657c7e09e.png"/></p>
+<h2><strong> 04 编译</strong></h2>
+<p> </p>
+<p>接下来开始编译过程。依次执行如下命令，创建build目录，执行ccmake：</p>
+<p> </p>
+<pre><code>cd QGIS-final-3_26_0</code><code>mkdir build-master</code><code>cd build-master</code><code>ccmake ..</code></pre>
+<p> </p>
+<p>ccmake是一个图形化的配置界面，启动后界面如下：</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/0043cc96d533ef6d7bf3a336bfd0ca58.png"/></p>
+<p> </p>
+<p>注意：“ccmake ..”命令后一定要加上两个英文状态的点，表示要读取的CMakeLists.txt配置文件所在位置为当前目录的上一级目录。</p>
+<p> </p>
+<p>按键盘“c”键，开始将CMakeLists.txt配置信息读取进来：</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/dc12098b63e147080803b9794e287fc9.png"/></p>
+<p> </p>
+<p>完成读入后，配置项和默认取值将显示在窗口中：</p>
+<p> </p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/ac2050e00a66ffb1bea386bb305ba711.png"/></p>
+<p> </p>
+<p>用键盘↑、↓箭头在配置项之间移动，如果想修改一个配置项的取值，按“Enter”键，在右边输入要设置的值，再回车确认修改。</p>
+<p> </p>
+<p>我们可以先最简单的编译开始，按默认配置继续走下去。按键盘上的“c”键将配置生成缓存（注意，这里可能需要多次按“c”键）直到下方出现“Press [g] to generate and exit”选项：</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/419a38f1d4b355a32a05793a1cc723fe.png"/></p>
+<p> </p>
+<p>按键盘“g”键，生成本地化的makefile：</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/3d696b13d662a9f39df0c3a60834c722.png"/></p>
+<p> </p>
+<p>完成后将自动退出ccmake界面，回到命令行终端。输入“make”命令，回车，开始编译可执行文件：</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/2818981b4293327df9a6fa210dd1bd07.png"/></p>
+<p> </p>
+<p>编译过程需要耗费很长时间，有多种加快编译的方法，例如，“make”命令后可加入处理器个数参数变为“make -j4”，4即处理器个数，多个处理器一起编译将提高速度。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/3b9dc8b984f3d1fb9b201555e0e661ef.png"/></p>
+<p> </p>
+<p>耐心等待进度显示100%，此时我们完成了从源代码编译QGIS软件的整个过程。但是默认设置不包含三维，我们将在下一节详细讨论如何将三维模块加进来。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/3482f2a1e0c60207e67f146d43dbb43e.png"/></p>
+<h2><strong> 05 编译三维模块</strong></h2>
+<p> </p>
+<p>默认配置中，三维模块和新增支持的内存数据库SAP HANA模块并没有启用，所以编译完成后得到的QGIS<strong>不包含三维浏览和SAP HANA数据库存储功能</strong>，如果需要使用这两个模块，在ccmake的配置阶段需将WITH_3D和WITH_HANA设置为“ON”。操作步骤为：</p>
+<p> </p>
+<ol><li> <p>使用上下箭头将光标移动到WITH_3D项，</p> </li><li> <p>按回车键，将右边的取值从“OFF”切换到“ON”，</p> </li><li> <p>同样的方法可设置WITH_HANA模块。</p> </li></ol>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/12ea073ba4fcfc49d46604a0dde3dd2e.png"/></p>
+<p> </p>
+<p>因为QGIS的三维模块需要Qt53DExtras的支持，加入额外的三维模块将显著增加编译的难度。默认情况下Debian发行版本的Qt模块中不包含Qt53DExtras，所以QGIS源代码仓库根目录下的external/qt3dextra-headers子目录自带了Qt53DExtras相关头文件。</p>
+<p> </p>
+<p>在QGIS源代码编译中启用三维，需要配置5个编译选项把相关文件的路径传递给编译器：WITH_3D、CMAKE_PREFIX_PATH、QT5_3DEXTRA_INCLUDE_DIR、QT5_3DEXTRA_LIBRARY、Qt53DExtras_DIR，各选项的取值如下：</p>
+<p> </p>
+<blockquote>
+<p><strong>WITH_3D：</strong>TRUE；</p>
+<p><strong>CMAKE_PREFIX_PATH：</strong>｛QGIS源代码目录｝/external/qt3dextra-headers/cmake；</p>
+<p><strong>QT5_3DEXTRA_INCLUDE_DIR：</strong>｛QGIS源代码目录｝/external/qt3dextra-headers/；</p>
+<p><strong>QT5_3DEXTRA_LIBRARY：</strong>/usr/lib/x86_64-linux-gnu/libQt53DExtras.so；</p>
+<p><strong>Qt53DExtras_DIR：</strong>｛QGIS源代码目录｝/external/qt3dextra-headers/cmake/Qt53DExtras。</p>
+</blockquote>
+<p> </p>
+<p>因为CMakeLists.txt中并没有包含上述所有参数，所以不能使用图形界面ccmake来配置参数，需要借助命令行的cmake命令，以我本次编译为例，运行的cmake命令为：</p>
+<p> </p>
+<pre><code>cmake -DWITH_3D=TRUE -DCMAKE_PREFIX_PATH=/home/wujianling/dev/QGIS-final-3_26_0/QGIS-final-3_26_0/external/qt3dextra-headers/cmake -DQT5_3DEXTRA_INCLUDE_DIR=/home/wujianling/dev/QGIS-final-3_26_0/QGIS-final-3_26_0/external/qt3dextra-headers -DQT5_3DEXTRA_LIBRARY=/usr/lib/x86_64-linux-gnu/libQt53DExtras.so -DQt53DExtras_DIR=/home/wujianling/dev/QGIS-final-3_26_0/QGIS-final-3_26_0/external/qt3dextra-headers/cmake/Qt53DExtras ..</code></pre>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/14df8f3072358170706395c31fffcf1d.png"/></p>
+<p> </p>
+<p>拷贝这个命令时，注意把所有路径参数修改为自己电脑上对应路径，否则将会出现找不到文件的错误。另外，最后的两个英文状态的“..”不能省略！</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/810739b39885df956df2996b416c1c0c.png"/></p>
+<p> </p>
+<p>完成配置后，使用“make”命令重新编译生成QGIS可执行文件。</p>
+<p> </p>
+<p>注意：每次重新编译，都需要使用“rm -f ./*”命令将build-master目录下的所有之前编译生成的缓存清空，否则会遇到意想不到的错误。</p>
+<p> </p>
+<h2><strong> 06 运行编译结果</strong></h2>
+<p> </p>
+<p>在命令行终端运行“./output/bin/qgis”，将启动刚编译好的QGIS程序，当出现启动界面时，是不是很激动？</p>
+<p> </p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/71efe00de7ca1600f96f30035f10fae1.png"/></p>
+<p> </p>
+<p>点击菜单【View】，如果出现【New 3D Map View】子菜单，点击弹出三维浏览窗口，说明三维模块已编译成功。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/1ea65750a66f54869d6442961a13718f.png"/></p>
+<p> </p>
+<h2><strong> 07 出错大全和解决办法</strong></h2>
+<p> </p>
+<p>这一节将列出这次编译过程所遇到的所有报错和解决办法，避免大家踩到相同的坑。</p>
+<p> </p>
+<ul><li> <p><strong>安装依赖库可能出现的问题及解决办法</strong></p> </li></ul>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>权限不足</strong></span></p>
+<p> </p>
+<p>按照官网的编译步骤，使用“ apt-get install”命令安装依赖库时，如果当前登陆Ubuntu系统的用户不是root用户，会出现权限不足。</p>
+<p> </p>
+<p>解决办法：在命令前加sudo，并按照提示输入当前用户的密码（注意，不是root用户的密码！）。</p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>依赖库下载失败</strong></span></p>
+<p> </p>
+<p>这是最常见的问题，是网络连接不稳定导致，解决办法是重新运行前面安装依赖库命令“ apt-get install …”，Ubuntu将会跳过已经下载的软件包，将没有成功下载的包补下回来，然后继续安装过程。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/4bc5049d7f63dd1c025088a6bc4ffd29.png"/></p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>Lighttpd错误</strong></span></p>
+<p> </p>
+<p>报错信息如下：</p>
+<p> </p>
+<p>Job for lighttpd.service failed because  the control process exited with error code.</p>
+<p>see "systemctl status lighttpd.service" and "journalctl -xe" for details.</p>
+<p>invoke-rc.d:initscript lighttpd,action "start" failed.</p>
+<p> </p>
+<p>这是lighttpd的一个bug，是由于lighttpd的配置中引用了gamin，而系统没有安装gamin引起。</p>
+<p> </p>
+<p>安装gamin可消除该错误，命令如下：</p>
+<p> </p>
+<pre><code>sudo apt-get install gamin</code></pre>
+<p> </p>
+<ul><li> <p><strong>编译中遇到的问题及解决办法</strong></p> </li></ul>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>警告：Policy CMP0075 is not set：Include file check macros honor CMAKE_REQUIRED_LIBRARIES.</strong></span></p>
+<p> </p>
+<p>这是检查包含文件宏（Include file check macros）在不同cmake版本的执行策略。在cmake 3.12及以上版本，包含文件检查宏使用CMAKE_REQUIRED_LIBRARIES变量，cmake 3.11以下版本则使用CheckIncludeFile模块的check_include_file宏。</p>
+<p> </p>
+<p>该警告在cmake 3.16.3版本可忽略，（但是不能保证将来的cmake版本仍然兼容），所以目前看到这个警告时，直接按“e”键继续即可。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/26b2a1040fc9a750c74757ae6446a352.png"/></p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>错误：找不到C++编译器</strong></span></p>
+<p> </p>
+<p>报错信息：No CMAKE_CXX_COMPILER could be found。</p>
+<p> </p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/761d910612f09d9c70ed48ab9047ea16.png"/></p>
+<p> </p>
+<p>这是因为默认没有安装g++编译器，运行下面命令安装：</p>
+<p> </p>
+<pre><code>sudo apt-get install build-essential</code></pre>
+<p> </p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>错误：找不到Qt53DExtras相关配置文件</strong></span></p>
+<p> </p>
+<p>报错信息：</p>
+<p> </p>
+<p>Could not find a package configuration file provided by "Qt53DExtras" with any of the following names:</p>
+<p>Qt53DExtrasConfig.cmake</p>
+<p>qt53dextras-config.cmake</p>
+<p> </p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/f65add4f7742527e40ffda53cc283e8a.png"/></p>
+<p> </p>
+<p>这是编译三维模块最常见错误，再次检查三维配置的相关选项：CMAKE_PREFIX_PATH、QT5_3DEXTRA_INCLUDE_DIR、QT5_3DEXTRA_LIBRARY、Qt53DExtras_DIR，其中，Qt53DExtras_DIR配置项指向的目录应包含Qt53DExtrasConfig.cmake或者qt53dextras-config.cmake，确保路径正确并且路径下包含这两个文件之一。</p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>错误：找不到Qt5::3DExtras</strong></span></p>
+<p> </p>
+<p>报错信息：c++ error:Qt5::3DExtras-NOTFOUND: No  such file or directory。</p>
+<p> </p>
+<p>C++编译进度到41%左右，如果出现c++ error:Qt5::3DExtras-NOTFOUND导致编译失败，则需要检查三维相关选项：CMAKE_PREFIX_PATH、QT5_3DEXTRA_INCLUDE_DIR、QT5_3DEXTRA_LIBRARY，使用带上述参数的“cmake”命令重新设置，确保指向的路径正确。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/e78c1fa799710b2e417f792c68d2c3c3.png"/></p>
+<p> </p>
+<p><span style="color:#f33b45;"><strong>错误：找不到Qt3DExtrax/QCuboidMesh</strong></span></p>
+<p> </p>
+<p>报错信息：fatal error:Qt3DExtras/QCuboidMesh:No such file or directory。</p>
+<p> </p>
+<p>这是编译进行到43%左右出现的错误，仍然是三维的问题，｛QGIS源代码目录｝/src/3d/qgsskyboxentity.h文件引用了Qt3DExtras/QCuboidMesh文件，然而/src/3d/目录下并没有Qt3DExtras/QCuboidMesh文件，所以出现错误。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/592abd332adb0df2f21ccbbd2c9b74a1.png"/></p>
+<p> </p>
+<p>解决办法是，到｛QGIS源代码目录｝/external/qt3dextra-headers/，将Qt3DExtras目录拷贝到｛QGIS源代码目录｝/src/3d/目录下。</p>
+<p> <img alt="" src="https://img-blog.csdnimg.cn/img_convert/7045c7cce5163fcadfd824216d11abc1.png"/></p>
+<p> </p>
+<p> </p>
+<hr/>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/a3f3ed76a1fc467c0d47197390620f16.png"/></p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/d0eb21b3f8aaa88ce1aa16913b220de7.png"/></p>
+<p><strong>版权声明</strong></p>
+<p> </p>
+
+<p> </p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/e537784c61ba546b111a7a81d151d78a.png"/></p>
+<p> </p>
+<p> </p>
+</div>
+</div>
+<div id="treeSkill"></div>
+</article>
+<script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>
